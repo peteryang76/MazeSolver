@@ -31,7 +31,25 @@ public class Puzzle {
      * @param new_cell the new cell to be set as
      */
     private void setCell(int x, int y, Cell new_cell) {
+        //TODO:
+    }
 
+    /**
+     * Check if this puzzle is a valid one
+     * To be considered as valid, a puzzle must have:
+     * at least 1 start and
+     * at least 1 end
+     *
+     * @return true if the puzzle is valid; false otherwise
+     */
+    public boolean isValid() {
+        //TODO:
+        return false;
+    }
+
+    public Cell getCell(int x, int y) {
+        //TODO:
+        return null;
     }
 
     /**
