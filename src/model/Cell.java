@@ -7,4 +7,6 @@ public enum  Cell {
     Start,
     End,
     Path
+    //,
+   // empty
 }
