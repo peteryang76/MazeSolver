@@ -126,7 +126,6 @@ public class Puzzle {
                 if (i != height - 1) {
                     writer.write("\n");
                 }
-
             }
             writer.close();
             return true;
