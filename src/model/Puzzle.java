@@ -15,116 +15,84 @@ public class Puzzle {
     int width;
     int height;
 
+    // row : in which row
+    //col  : in which column
+
     /**
      * Initialize puzzle such that every cell is a path
      *
-     * @param width width of the puzzle
+     * @param width  width of the puzzle
      * @param height height of the puzzle
      */
     public Puzzle(int width, int height) {
         this.width = width;
         this.height = height;
-//        TODO: implement constructor
+        puzzle = new ArrayList<>();
+
+        for (int i = 0; i < height; i++) {
+            List<Cell> line = new ArrayList<Cell>();
+            for (int j = 0; j < width; j++) {
+                line.add(Cell.Path);
+            }
+            puzzle.add(line);
+        }
     }
 
 
     /**
      * Set the cell at (x,y) as new_cell
      *
-     * @param x x index
-     * @param y y index
+     * @param row      number of row
+     * @param col      number of col1
      * @param new_cell the new cell to be set as
      */
-    private void setCell(int x, int y, Cell new_cell) {
-        puzzle.get(x).set(y, new_cell);
+    public void setCell(int row, int col, Cell new_cell) {
+        puzzle.get(row).set(col, new_cell);
 
     }
 
     /**
      * Check if this puzzle is a valid one
      * To be considered as valid, a puzzle must have:
-     * at least 1 start and
+     * exactly 1 start and
      * at least 1 end
      *
      * @return true if the puzzle is valid; false otherwise
      */
     public boolean isValid() {
-        if (puzzle.contains(Cell.Start) && puzzle.contains(Cell.End)){
-            return true;
-        }
-
-        return false;
-    }
-
-    public Cell getCell(int x, int y) {
-        if (x < width && y < height){
-            return puzzle.get(x).get(y);
-        }
-
-        return null;
-    }
-
-    /**
-     * Read from file and set this puzzle to the puzzle in the file.
-     *
-     * @param path the path to the file that will be read from.
-     * @return true if success
-     * @throws InvalidFileException if the path is invalid
-     * or the file doesn't contain a puzzle
-     */
-    private boolean readFromFile(String path)  {
-        try {
-            FileInputStream inputStream = new FileInputStream(path);
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader reader = new BufferedReader(inputStreamReader);
-
-            String stop = "/n";
-            List<String> templist = new ArrayList<>();
-            int x = 0;
-            int y = 0;
-
-            String templine = "";
-            while ((templine = reader.readLine()) != null) {
-                templist.add(templine);
-                y++;
-            }
-            x = templine.length();
-
-            for(int i=0;i<y;i++){
-                String object = templist.get(i);
-                for (int j=0;j<x;j++){
-                    char CellType = object.charAt(j);
-                    switch (CellType){
-                        case ' ':
-                            setCell(j,i,Cell.Path);
-
-                        case '-':
-                            setCell(j,i,Cell.Wall);
-
-                        case 'e':
-                            setCell(j,i,Cell.End);
-                        case 's':
-                            setCell(j,i,Cell.Start);
+        boolean hasEnd = false;
+        boolean hasStart = false;
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                Cell cell = puzzle.get(j).get(i);
+                hasEnd = (cell == Cell.End);
+                if (cell == Cell.Start) {
+                    if (hasStart) {
+                        return false;
+                    } else {
+                        hasStart = true;
                     }
                 }
             }
-            x=width;
-            y=height;
-            inputStream.close();
-            inputStreamReader.close();
-            reader.close();
-            return true;
-
-        }catch (FileNotFoundException e){
-            return false;
-        } catch (IOException e){
-                return false;
-        }catch (InvalidFileException e) {
-            return false;                     //!!!
         }
+        return hasStart && hasEnd;
+    }
 
-        //TODO:
-        return false;
+    /**
+     * @param row number of row
+     * @param col number of col
+     * @return cell at (row, col)
+     */
+    public Cell getCell(int row, int col) {
+        return puzzle.get(row).get(col);
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     /**
@@ -133,33 +101,61 @@ public class Puzzle {
      * @param path the path of file to be written into
      * @return true if success; false otherwise
      */
-    private boolean writeToFile(String path) {
-    try{
-        BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-        for(int i=0;i<height;i++){
+    public boolean writeToFile(String path) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+            for (int i = 0; i <height ; i++) {
 
-            for (int j=0;j<width;j++){
-                switch (getCell(j,i)){
-                    case Path:
-                        writer.write(' ');
-                    case Wall:
-                        writer.write('-');
-                    case End:
-                        writer.write('e');
-                    case Start:
-                        writer.write('s');                }
+                for (int j = 0; j <width ; j++) {
+                    switch (getCell(i, j)) {
+                        case Path:
+                            writer.write(' ');
+                            break;
+                        case Wall:
+                            writer.write('-');
+                            break;
+                        case End:
+                            writer.write('e');
+                            break;
+                        case Start:
+                            writer.write('s');
+                            break;
+                    }
+
+                }
+                if (i != height - 1) {
+                    writer.write("\n");
+                }
 
             }
-            writer.write("/n");
+            writer.close();
+            return true;
+        } catch (IOException e) {
+            return false;
         }
-        writer.close();
-        return true;
-    } catch (IOException e) {
-        return false;
     }
 
+    public void printPuzzle() {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                Cell cell = this.getCell(row, col);
+                switch (cell) {
+                    case Path:
+                        System.out.print(' ');
+                        break;
+                    case Wall:
+                        System.out.print('-');
+                        break;
+                    case End:
+                        System.out.print('e');
+                        break;
+                    case Start:
+                        System.out.print('s');
+                        break;
+                }
 
-        //TODO:
-
+            }
+            System.out.println("\n");
+        }
     }
 }
