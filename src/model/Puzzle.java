@@ -13,6 +13,7 @@ public class Puzzle {
     int width;
     int height;
 
+
     // row : in which row
     //col  : in which column
 

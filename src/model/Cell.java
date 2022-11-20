@@ -6,6 +6,7 @@ public class Cell {
     double heuristic;
     CellType type;
 
+
     public Cell(int row,int col,double h,CellType type){
         this.row = row;
         this.col = col;
