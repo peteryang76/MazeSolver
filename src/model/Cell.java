@@ -16,6 +16,7 @@ public class Cell {
     public int[][] getLocation(){
         return new int[row][col];
     }
+
     public double geth(){
         return heuristic;
     }
