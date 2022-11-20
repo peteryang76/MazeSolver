@@ -1,7 +1,6 @@
 package persistence;
 
 import Exceptions.InvalidFileException;
-import model.Cell;
 import model.Puzzle;
 
 import java.io.*;
@@ -49,17 +48,17 @@ public class Reader {
                     char CellType = object.charAt(col);
                     switch (CellType){
                         case ' ':
-                            result.setCell(row, col, Cell.Path);
+                            result.setCell(row, col, model.CellType.Path);
                             break;
                         case '-':
-                            result.setCell(row, col, Cell.Wall);
+                            result.setCell(row, col, model.CellType.Wall);
                             break;
 
                         case 'e':
-                            result.setCell(row, col, Cell.End);
+                            result.setCell(row, col, model.CellType.End);
                             break;
                         case 's':
-                            result.setCell(row, col, Cell.Start);
+                            result.setCell(row, col, model.CellType.Start);
                             break;
                     }
                 }
