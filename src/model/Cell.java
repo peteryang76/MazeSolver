@@ -11,7 +11,6 @@ public class Cell {
         this.row = row;
         this.col = col;
         this.heuristic = h;
-
         this.type = type;
     }
 
