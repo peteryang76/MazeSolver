@@ -7,6 +7,6 @@ public enum CellType {
     Start,
     End,
     Path
-    //,
-   // empty
+
+
 }
