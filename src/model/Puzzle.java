@@ -9,14 +9,14 @@ import java.util.List;
 
 // Puzzle is a 2d array of cells
 public class Puzzle {
-//    TODO: implement class
 
-    List<List<Cell>> puzzle; // maybe change into a 3D array?
-    int width;
-    int height;
+    private List<List<Cell>> puzzle;
+    private int width;
+    private int height;
+    private List<Integer> end;
 
     // row : in which row
-    //col  : in which column
+    // col : in which column
 
     /**
      * Initialize puzzle such that every cell is a path
@@ -28,6 +28,7 @@ public class Puzzle {
         this.width = width;
         this.height = height;
         puzzle = new ArrayList<>();
+        end = new ArrayList<>();
 
         for (int i = 0; i < height; i++) {
             List<Cell> line = new ArrayList<Cell>();
@@ -134,6 +135,9 @@ public class Puzzle {
         }
     }
 
+    /**
+     * print function
+     */
     public void printPuzzle() {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
