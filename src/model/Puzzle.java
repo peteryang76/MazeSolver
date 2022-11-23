@@ -1,7 +1,5 @@
 package model;
 
-import Exceptions.InvalidFileException;
-
 
 import java.io.*;
 import java.util.ArrayList;
@@ -11,9 +9,10 @@ import java.util.List;
 public class Puzzle {
 //    TODO: implement class
 
-    List<List<Cell>> puzzle; // maybe change into a 3D array?
+    List<List<CellType>> puzzle; // maybe change into a 3D array?
     int width;
     int height;
+
 
     // row : in which row
     //col  : in which column
@@ -30,9 +29,9 @@ public class Puzzle {
         puzzle = new ArrayList<>();
 
         for (int i = 0; i < height; i++) {
-            List<Cell> line = new ArrayList<Cell>();
+            List<CellType> line = new ArrayList<CellType>();
             for (int j = 0; j < width; j++) {
-                line.add(Cell.Path);
+                line.add(CellType.Path);
             }
             puzzle.add(line);
         }
@@ -40,14 +39,14 @@ public class Puzzle {
 
 
     /**
-     * Set the cell at (x,y) as new_cell
+     * Set the cell at (x,y) as new_cellType
      *
      * @param row      number of row
      * @param col      number of col1
-     * @param new_cell the new cell to be set as
+     * @param new_cellType the new cell to be set as
      */
-    public void setCell(int row, int col, Cell new_cell) {
-        puzzle.get(row).set(col, new_cell);
+    public void setCell(int row, int col, CellType new_cellType) {
+        puzzle.get(row).set(col, new_cellType);
 
     }
 
@@ -64,9 +63,9 @@ public class Puzzle {
         boolean hasStart = false;
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                Cell cell = puzzle.get(j).get(i);
-                hasEnd = (cell == Cell.End);
-                if (cell == Cell.Start) {
+                CellType cellType = puzzle.get(j).get(i);
+                hasEnd = (cellType == CellType.End);
+                if (cellType == CellType.Start) {
                     if (hasStart) {
                         return false;
                     } else {
@@ -83,7 +82,7 @@ public class Puzzle {
      * @param col number of col
      * @return cell at (row, col)
      */
-    public Cell getCell(int row, int col) {
+    public CellType getCell(int row, int col) {
         return puzzle.get(row).get(col);
     }
 
@@ -137,8 +136,8 @@ public class Puzzle {
     public void printPuzzle() {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                Cell cell = this.getCell(row, col);
-                switch (cell) {
+                CellType cellType = this.getCell(row, col);
+                switch (cellType) {
                     case Path:
                         System.out.print(' ');
                         break;
