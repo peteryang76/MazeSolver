@@ -22,6 +22,7 @@ public class TestPuzzleSolver {
         p = new Puzzle(WIDTH, HEIGHT);
         p.setCell(0, 0, CellType.Start);
         p.setCell(HEIGHT - 1, WIDTH - 1, CellType.End);
+
     }
 
     @Test
