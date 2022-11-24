@@ -34,6 +34,5 @@ public class TestPuzzleSolver {
         } catch (InvalidPuzzleException e) {
             e.printStackTrace();
         }
-
     }
 }
