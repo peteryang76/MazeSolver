@@ -13,10 +13,12 @@ public class Puzzle {
     private List<List<Cell>> puzzle;
     private int width;
     private int height;
-    private List<Integer> end;
+
+    private Cell start;
+    private List<Cell> end;
 
     // row : in which row
-    // col : in which column
+    //col  : in which column
 
     /**
      * Initialize puzzle such that every cell is a path
@@ -27,13 +29,14 @@ public class Puzzle {
     public Puzzle(int width, int height) {
         this.width = width;
         this.height = height;
-        puzzle = new ArrayList<>();
+        start = null;
         end = new ArrayList<>();
+        puzzle = new ArrayList<>();
 
-        for (int i = 0; i < height; i++) {
-            List<Cell> line = new ArrayList<Cell>();
-            for (int j = 0; j < width; j++) {
-                line.add(Cell.Path);
+        for (int row = 0; row < height; row++) {
+            List<Cell> line = new ArrayList<>();
+            for (int col = 0; col < width; col++) {
+                line.add(new Cell(row, col, -1, CellType.Path));
             }
             puzzle.add(line);
         }
@@ -41,15 +44,20 @@ public class Puzzle {
 
 
     /**
-     * Set the cell at (x,y) as new_cell
+     * Set the cell at (x,y) as newType
      *
      * @param row      number of row
      * @param col      number of col1
-     * @param new_cell the new cell to be set as
+     * @param newType the new cell to be set as
      */
-    public void setCell(int row, int col, Cell new_cell) {
-        puzzle.get(row).set(col, new_cell);
-
+    public void setCell(int row, int col, CellType newType) {
+        Cell cell = puzzle.get(row).get(col);
+        if (newType == CellType.Start) {
+            start = cell;
+        } else if (newType == CellType.End) {
+            end.add(cell);
+        }
+        cell.setType(newType);
     }
 
     /**
@@ -61,22 +69,7 @@ public class Puzzle {
      * @return true if the puzzle is valid; false otherwise
      */
     public boolean isValid() {
-        boolean hasEnd = false;
-        boolean hasStart = false;
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                Cell cell = puzzle.get(j).get(i);
-                hasEnd = (cell == Cell.End);
-                if (cell == Cell.Start) {
-                    if (hasStart) {
-                        return false;
-                    } else {
-                        hasStart = true;
-                    }
-                }
-            }
-        }
-        return hasStart && hasEnd;
+        return (start != null) && (end.size() > 0);
     }
 
     /**
@@ -96,6 +89,14 @@ public class Puzzle {
         return height;
     }
 
+    public List<Cell> getEnd() {
+        return end;
+    }
+
+    public Cell getStart() {
+        return start;
+    }
+
     /**
      * Write this puzzle to the file
      *
@@ -105,10 +106,10 @@ public class Puzzle {
     public boolean writeToFile(String path) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-            for (int i = 0; i <height ; i++) {
+            for (int row = 0; row <height ; row++) {
 
-                for (int j = 0; j <width ; j++) {
-                    switch (getCell(i, j)) {
+                for (int col = 0; col <width ; col++) {
+                    switch (getCell(row, col).getType()) {
                         case Path:
                             writer.write(' ');
                             break;
@@ -124,7 +125,7 @@ public class Puzzle {
                     }
 
                 }
-                if (i != height - 1) {
+                if (row != height - 1) {
                     writer.write("\n");
                 }
             }
@@ -135,14 +136,11 @@ public class Puzzle {
         }
     }
 
-    /**
-     * print function
-     */
     public void printPuzzle() {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                Cell cell = this.getCell(row, col);
-                switch (cell) {
+                CellType type = this.getCell(row, col).getType();
+                switch (type) {
                     case Path:
                         System.out.print(' ');
                         break;
@@ -159,6 +157,20 @@ public class Puzzle {
 
             }
             System.out.println("\n");
+        }
+    }
+
+    public void printSolution(List<Cell> solution) {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                Cell cell = puzzle.get(row).get(col);
+                if (solution.contains(cell)) {
+                    System.out.print("-");
+                } else {
+                    System.out.print("0");
+                }
+            }
+            System.out.print("\n");
         }
     }
 }
