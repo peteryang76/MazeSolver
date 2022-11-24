@@ -14,11 +14,31 @@ public class Cell {
         this.type = type;
     }
 
-    public int[][] getLocation(){
-        return new int[row][col];
+    /**
+     * Set the this.type = type
+     * @param newType the new type
+     */
+    public void setType(CellType newType) {
+        this.type = newType;
     }
 
-    public double geth(){
+    /**
+     * Set this.heuristic = h
+     * @param h the heuristic value for this cell
+     */
+    public void setHeuristic(int h) {
+        this.heuristic = h;
+    }
+
+    public int[] getLocation(){
+        return new int[] {row, col};
+    }
+
+    public CellType getType() {
+        return this.type;
+    }
+
+    public double getH(){
         return heuristic;
     }
 

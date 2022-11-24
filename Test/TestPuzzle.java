@@ -25,7 +25,7 @@ public class TestPuzzle {
         assertFalse(puzzle.isValid());
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
-                assertTrue(puzzle.getCell(i, j) == CellType.Path);
+                assertTrue(puzzle.getCell(i, j).getType() == CellType.Path);
             }
         }
     }
@@ -33,11 +33,11 @@ public class TestPuzzle {
     @Test
     void testSetCell() {
         puzzle.setCell(2, 3, CellType.Start);
-        assertEquals(CellType.Start, puzzle.getCell(2, 3));
+        assertEquals(CellType.Start, puzzle.getCell(2, 3).getType());
         assertFalse(puzzle.isValid());
         puzzle.setCell(puzzle.getWidth() - 1, puzzle.getHeight() - 1, CellType.End);
         puzzle.printPuzzle();
-        assertEquals(CellType.End, puzzle.getCell(puzzle.getWidth() - 1, puzzle.getHeight() - 1));
+        assertEquals(CellType.End, puzzle.getCell(puzzle.getWidth() - 1, puzzle.getHeight() - 1).getType());
         assertTrue(puzzle.isValid());
     }
 
@@ -59,8 +59,8 @@ public class TestPuzzle {
             puzzle = reader.readFromFile("./data/success.txt");
             puzzle.printPuzzle();
             assertTrue(puzzle.isValid());
-            assertEquals(CellType.Start, puzzle.getCell(2,4));
-            assertEquals(CellType.End,puzzle.getCell(3,5));
+            assertEquals(CellType.Start, puzzle.getCell(2,4).getType());
+            assertEquals(CellType.End,puzzle.getCell(3,5).getType());
         }catch (InvalidFileException e){
             System.out.println(e.getMessage());
             fail("Unexpected exception");
