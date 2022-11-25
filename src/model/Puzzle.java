@@ -156,7 +156,7 @@ public class Puzzle {
                 }
 
             }
-            System.out.println("\n");
+            System.out.print("\n");
         }
     }
 
