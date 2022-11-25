@@ -1,3 +1,4 @@
+import Exceptions.InvalidFileException;
 import Exceptions.InvalidPuzzleException;
 import backend.PuzzleSolver;
 import model.Cell;
@@ -5,8 +6,11 @@ import model.CellType;
 import model.Puzzle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import persistence.Reader;
 
 import java.util.List;
+
+import static org.junit.Assert.fail;
 
 public class TestPuzzleSolver {
 
@@ -33,6 +37,22 @@ public class TestPuzzleSolver {
             p.printSolution(solution);
         } catch (InvalidPuzzleException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testSolvePuzzle() {
+        Reader reader = new Reader();
+        try {
+            p = reader.readFromFile("data/testSimple.txt");
+            List<Cell> solution = ps.hSolvePuzzle(p);
+            p.printPuzzle();
+//            ps.printHeuristic(p);
+            p.printSolution(solution);
+        } catch (InvalidFileException e) {
+            e.printStackTrace();
+        } catch (InvalidPuzzleException e) {
+            fail();
         }
     }
 }
