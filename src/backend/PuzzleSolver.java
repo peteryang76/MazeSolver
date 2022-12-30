@@ -1,8 +1,7 @@
 package backend;
 
 import Exceptions.InvalidPuzzleException;
-import model.Cell;
-import model.CellType;
+import model.Node;
 import model.Puzzle;
 
 import java.util.*;
@@ -15,7 +14,7 @@ public class PuzzleSolver {
 
     }
 
-    public List<Cell> hSolvePuzzle(Puzzle p) throws InvalidPuzzleException {
+    public List<Node> hSolvePuzzle(Puzzle p) throws InvalidPuzzleException {
         if (!p.isValid()) {
             throw new InvalidPuzzleException("The puzzle does not have a start or an end");
         }
@@ -29,62 +28,62 @@ public class PuzzleSolver {
      * @param p the puzzle to be set
      */
     private void constructHeuristic(Puzzle p) {
-        List<Cell> ends = p.getEnd();
-        for (int row = 0; row < p.getHeight(); row++) {
-            for (int col = 0; col < p.getWidth(); col++) {
-                Cell cell = p.getCell(row, col);
-                if (cell.getType() == CellType.Wall) {
-                    cell.setHeuristic(INFINITY);
-                    continue;
-                }
-                int minH = INFINITY;
-                for (Cell end : ends) {
-                    int e_row = end.getLocation()[0];
-                    int e_col = end.getLocation()[1];
-                    int h = Math.abs(e_row - row) + Math.abs(e_col - col);
-                    if (h < minH) {
-                        minH = h;
-                    }
-                }
-                cell.setHeuristic(minH);
-            }
-        }
+//        List<Node> ends = p.getEnd();
+//        for (int row = 0; row < p.getHeight(); row++) {
+//            for (int col = 0; col < p.getWidth(); col++) {
+//                Node node = p.getNode(row, col);
+//                if (node.getType() == NodeType.Wall) {
+//                    node.setHeuristic(INFINITY);
+//                    continue;
+//                }
+//                int minH = INFINITY;
+//                for (Node end : ends) {
+//                    int e_row = end.getLocation()[0];
+//                    int e_col = end.getLocation()[1];
+//                    int h = Math.abs(e_row - row) + Math.abs(e_col - col);
+//                    if (h < minH) {
+//                        minH = h;
+//                    }
+//                }
+//                node.setHeuristic(minH);
+//            }
+//        }
     }
 
-    private List<Cell> findSolution(Puzzle p) {
-        Cell start = p.getStart();
-        List<Cell> solution = new ArrayList<>();
-        List<Cell> visited = new ArrayList<>();
+    private List<Node> findSolution(Puzzle p) {
+        Node start = p.getStart();
+        List<Node> solution = new ArrayList<>();
+        List<Node> visited = new ArrayList<>();
         return findSolutionHelper(p, start, solution, visited);
     }
 
-    private List<Cell> findSolutionHelper(Puzzle p, Cell currCell, List<Cell> solution, List<Cell> visited) {
-        if (currCell.getH() == 0) {
-            solution.add(currCell);
+    private List<Node> findSolutionHelper(Puzzle p, Node currNode, List<Node> solution, List<Node> visited) {
+        if (currNode.getH() == 0) {
+            solution.add(currNode);
             return solution;
         }
         Map<String, Double> map = new HashMap<>();
-        double leftH = getNeighbourHeuristic("Left", p, currCell);
-        double rightH = getNeighbourHeuristic("Right", p, currCell);
-        double topH = getNeighbourHeuristic("Top", p, currCell);
-        double bottomH = getNeighbourHeuristic("Bottom", p, currCell);
+        double leftH = getNeighbourHeuristic("Left", p, currNode);
+        double rightH = getNeighbourHeuristic("Right", p, currNode);
+        double topH = getNeighbourHeuristic("Top", p, currNode);
+        double bottomH = getNeighbourHeuristic("Bottom", p, currNode);
         map.put("Left", leftH);
         map.put("Right", rightH);
         map.put("Top", topH);
         map.put("Bottom", bottomH);
         List<String> dirs = sortH(leftH, rightH, topH, bottomH);
         String next;
-        Cell nextCell;
+        Node nextNode;
         for (int i = 0; i < dirs.size(); i++) {
             double h_val = map.get(dirs.get(i));
             if (h_val != INFINITY) {
                 next = dirs.get(i);
-                nextCell = getNeighbourCell(next, p, currCell);
-                visited.add(currCell);
-                if (!visited.contains(nextCell)) {
-                    List<Cell> sol = findSolutionHelper(p, nextCell, solution, visited);
+                nextNode = getNeighbourCell(next, p, currNode);
+                visited.add(currNode);
+                if (!visited.contains(nextNode)) {
+                    List<Node> sol = findSolutionHelper(p, nextNode, solution, visited);
                     if (sol != null) {
-                        solution.add(currCell);
+                        solution.add(currNode);
                         return solution;
                     }
                 }
@@ -134,8 +133,8 @@ public class PuzzleSolver {
         return sortedDir;
     }
 
-    private double getNeighbourHeuristic(String dir, Puzzle p, Cell currCell) {
-        Cell neighbour = getNeighbourCell(dir, p, currCell);
+    private double getNeighbourHeuristic(String dir, Puzzle p, Node currNode) {
+        Node neighbour = getNeighbourCell(dir, p, currNode);
         if (neighbour == null) {
             return INFINITY;
         } else {
@@ -147,42 +146,43 @@ public class PuzzleSolver {
      * Return the neighbour cell in the direction specified
      * @param dir the direction of neighbour
      * @param p puzzle
-     * @param currCell current cell
+     * @param currNode current cell
      * @return the neighbour cell in the direction specified
      */
-    private Cell getNeighbourCell(String dir, Puzzle p, Cell currCell) {
-        int height = p.getHeight();
-        int width = p.getWidth();
-        int currRow = currCell.getLocation()[0];
-        int currCol = currCell.getLocation()[1];
-        switch (dir) {
-            case "Left":
-                if (currCol - 1 >= 0) {
-                    return p.getCell(currRow, currCol - 1);
-                } else {
-                    return null;
-                }
-            case "Right":
-                if (currCol + 1 < width) {
-                    return p.getCell(currRow, currCol + 1);
-                } else {
-                    return null;
-                }
-            case "Top":
-                if (currRow - 1 >= 0) {
-                    return p.getCell(currRow - 1, currCol);
-                } else {
-                    return null;
-                }
-            case "Bottom":
-                if (currRow + 1 < height) {
-                    return p.getCell(currRow + 1, currCol);
-                } else {
-                    return null;
-                }
-            default:
-                return null;
-        }
+    private Node getNeighbourCell(String dir, Puzzle p, Node currNode) {
+//        int height = p.getHeight();
+//        int width = p.getWidth();
+//        int currRow = currNode.getLocation()[0];
+//        int currCol = currNode.getLocation()[1];
+//        switch (dir) {
+//            case "Left":
+//                if (currCol - 1 >= 0) {
+//                    return p.getNode(currRow, currCol - 1);
+//                } else {
+//                    return null;
+//                }
+//            case "Right":
+//                if (currCol + 1 < width) {
+//                    return p.getNode(currRow, currCol + 1);
+//                } else {
+//                    return null;
+//                }
+//            case "Top":
+//                if (currRow - 1 >= 0) {
+//                    return p.getNode(currRow - 1, currCol);
+//                } else {
+//                    return null;
+//                }
+//            case "Bottom":
+//                if (currRow + 1 < height) {
+//                    return p.getNode(currRow + 1, currCol);
+//                } else {
+//                    return null;
+//                }
+//            default:
+//                return null;
+//        }
+        return null;
     }
 
     /**
@@ -192,7 +192,7 @@ public class PuzzleSolver {
     public void printHeuristic(Puzzle p) {
         for (int row = 0; row < p.getHeight(); row++) {
             for (int col = 0; col < p.getWidth(); col++) {
-                System.out.print(p.getCell(row, col).getH() + "   ");
+                System.out.print(p.getNode(row, col).getH() + "   ");
             }
             System.out.print("\n");
         }
