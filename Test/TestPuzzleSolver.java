@@ -1,8 +1,8 @@
 import Exceptions.InvalidFileException;
 import Exceptions.InvalidPuzzleException;
 import backend.PuzzleSolver;
-import model.Cell;
-import model.CellType;
+import model.Node;
+import model.NodeType;
 import model.Puzzle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,15 +24,15 @@ public class TestPuzzleSolver {
     void setUp() {
         ps = new PuzzleSolver();
         p = new Puzzle(WIDTH, HEIGHT);
-        p.setCell(0, 0, CellType.Start);
-        p.setCell(HEIGHT - 1, WIDTH - 1, CellType.End);
+        p.setCell(0, 0, NodeType.Start);
+        p.setCell(HEIGHT - 1, WIDTH - 1, NodeType.End);
 
     }
 
     @Test
     void testConstructHeuristicValues() {
         try {
-            List<Cell> solution = ps.hSolvePuzzle(p);
+            List<Node> solution = ps.hSolvePuzzle(p);
             ps.printHeuristic(p);
             p.printSolution(solution);
         } catch (InvalidPuzzleException e) {
@@ -45,7 +45,7 @@ public class TestPuzzleSolver {
         Reader reader = new Reader();
         try {
             p = reader.readFromFile("data/testSimple.txt");
-            List<Cell> solution = ps.hSolvePuzzle(p);
+            List<Node> solution = ps.hSolvePuzzle(p);
             p.printPuzzle();
 //            ps.printHeuristic(p);
             p.printSolution(solution);

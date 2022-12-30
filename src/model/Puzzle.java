@@ -1,7 +1,5 @@
 package model;
 
-import Exceptions.InvalidFileException;
-
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,12 +8,13 @@ import java.util.List;
 // Puzzle is a 2d array of cells
 public class Puzzle {
 
-    private List<List<Cell>> puzzle;
+//    private List<List<Node>> puzzle;
+    private Node root;
     private int width;
     private int height;
 
-    private Cell start;
-    private List<Cell> end;
+    private Node start;
+    private List<Node> end;
 
     // row : in which row
     //col  : in which column
@@ -29,35 +28,71 @@ public class Puzzle {
     public Puzzle(int width, int height) {
         this.width = width;
         this.height = height;
-        start = null;
+        root = new Node(NodeType.Start);
+        start = root;
         end = new ArrayList<>();
-        puzzle = new ArrayList<>();
+        initializePuzzle(width, height);
+    }
 
+    /**
+     * Helper function for initialzePuzzle, initialize one row of the puzzle
+     *
+     * @param width number of nodes in a row
+     * @param node root
+     */
+    private void initializeOneRow(int width, Node node) {
+        if (width <= 1) {
+            return;
+        }
+        Node rNode = new Node(NodeType.Path);
+        node.right = rNode;
+        rNode.left = node;
+        if (node.top != null) {
+            rNode.top = node.top.right;
+            node.top.right.bot = rNode;
+        }
+        initializeOneRow(width - 1, node.right);
+    }
+
+    /**
+     * initialize puzzle so that all nodes have the type PATH
+     *
+     * @param width number of columns
+     * @param height number of rows
+     */
+    private void initializePuzzle(int width, int height) {
+        Node currNode = root;
         for (int row = 0; row < height; row++) {
-            List<Cell> line = new ArrayList<>();
-            for (int col = 0; col < width; col++) {
-                line.add(new Cell(row, col, -1, CellType.Path));
-            }
-            puzzle.add(line);
+            initializeOneRow(width, currNode);
+            Node bNode = new Node(NodeType.Path);
+            currNode.bot = bNode;
+            bNode.top = currNode;
+            currNode = currNode.bot;
         }
     }
 
-
     /**
      * Set the cell at (x,y) as newType
+     * NOTE: this function uses 0-index
      *
      * @param row      number of row
      * @param col      number of col1
      * @param newType the new cell to be set as
      */
-    public void setCell(int row, int col, CellType newType) {
-        Cell cell = puzzle.get(row).get(col);
-        if (newType == CellType.Start) {
-            start = cell;
-        } else if (newType == CellType.End) {
-            end.add(cell);
+    public void setCell(int row, int col, NodeType newType) {
+        Node node = root;
+        for (int r = 0; r < row; r++) {
+            node = node.bot;
         }
-        cell.setType(newType);
+        for (int c = 0; c < col; c++) {
+            node = node.right;
+        }
+        node.setType(newType);
+        if (newType == NodeType.Start) {
+            start = node;
+        } else if (newType == NodeType.End) {
+            end.add(node);
+        }
     }
 
     /**
@@ -73,12 +108,22 @@ public class Puzzle {
     }
 
     /**
+     * get the node at (row, col)
+     * NOTE: this function uses 0-index
+     *
      * @param row number of row
      * @param col number of col
-     * @return cell at (row, col)
+     * @return node at (row, col)
      */
-    public Cell getCell(int row, int col) {
-        return puzzle.get(row).get(col);
+    public Node getNode(int row, int col) {
+        Node node = root;
+        for (int r = 0; r < row; r++) {
+            node = node.bot;
+        }
+        for (int c = 0; c < col; c++) {
+            node = node.right;
+        }
+        return node;
     }
 
     public int getWidth() {
@@ -89,11 +134,11 @@ public class Puzzle {
         return height;
     }
 
-    public List<Cell> getEnd() {
+    public List<Node> getEnd() {
         return end;
     }
 
-    public Cell getStart() {
+    public Node getStart() {
         return start;
     }
 
@@ -109,7 +154,7 @@ public class Puzzle {
             for (int row = 0; row <height ; row++) {
 
                 for (int col = 0; col <width ; col++) {
-                    switch (getCell(row, col).getType()) {
+                    switch (getNode(row, col).getType()) {
                         case Path:
                             writer.write(' ');
                             break;
@@ -139,7 +184,7 @@ public class Puzzle {
     public void printPuzzle() {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                CellType type = this.getCell(row, col).getType();
+                NodeType type = this.getNode(row, col).getType();
                 switch (type) {
                     case Path:
                         System.out.print(' ');
@@ -160,11 +205,11 @@ public class Puzzle {
         }
     }
 
-    public void printSolution(List<Cell> solution) {
+    public void printSolution(List<Node> solution) {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                Cell cell = puzzle.get(row).get(col);
-                if (solution.contains(cell)) {
+                Node node = getNode(row, col);
+                if (solution.contains(node)) {
                     System.out.print("-");
                 } else {
                     System.out.print("0");

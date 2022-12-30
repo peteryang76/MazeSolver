@@ -1,24 +1,27 @@
 package model;
 
-public class Cell {
-    int row;
-    int col;
+public class Node {
     double heuristic;
-    CellType type;
+    NodeType type;
 
+    Node left;
+    Node right;
+    Node top;
+    Node bot;
 
-    public Cell(int row,int col,double h,CellType type){
-        this.row = row;
-        this.col = col;
-        this.heuristic = h;
+    public Node(NodeType type){
         this.type = type;
+        left = null;
+        right = null;
+        top = null;
+        bot = null;
     }
 
     /**
      * Set the this.type = type
      * @param newType the new type
      */
-    public void setType(CellType newType) {
+    public void setType(NodeType newType) {
         this.type = newType;
     }
 
@@ -30,11 +33,7 @@ public class Cell {
         this.heuristic = h;
     }
 
-    public int[] getLocation(){
-        return new int[] {row, col};
-    }
-
-    public CellType getType() {
+    public NodeType getType() {
         return this.type;
     }
 
