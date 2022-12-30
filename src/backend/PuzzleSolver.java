@@ -51,6 +51,12 @@ public class PuzzleSolver {
         }
     }
 
+    /**
+     * find solution to the puzzle
+     *
+     * @param p the puzzle
+     * @return a list of nodes that represents the solution
+     */
     private List<Node> findSolution(Puzzle p) {
         Node start = p.getStart();
         List<Node> solution = new ArrayList<>();
