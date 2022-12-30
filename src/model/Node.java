@@ -9,12 +9,19 @@ public class Node {
     Node top;
     Node bot;
 
+    int row;
+    int col;
+
     public Node(NodeType type){
         this.type = type;
         left = null;
         right = null;
         top = null;
         bot = null;
+        heuristic = -1;
+
+        row = -1;
+        col = -1;
     }
 
     /**
@@ -39,6 +46,15 @@ public class Node {
 
     public double getH(){
         return heuristic;
+    }
+
+    public void setLocation(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
+
+    public int[] getLocation() {
+        return new int[] {row, col};
     }
 
 }

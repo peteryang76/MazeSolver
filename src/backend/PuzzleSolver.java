@@ -2,6 +2,7 @@ package backend;
 
 import Exceptions.InvalidPuzzleException;
 import model.Node;
+import model.NodeType;
 import model.Puzzle;
 
 import java.util.*;
@@ -28,28 +29,34 @@ public class PuzzleSolver {
      * @param p the puzzle to be set
      */
     private void constructHeuristic(Puzzle p) {
-//        List<Node> ends = p.getEnd();
-//        for (int row = 0; row < p.getHeight(); row++) {
-//            for (int col = 0; col < p.getWidth(); col++) {
-//                Node node = p.getNode(row, col);
-//                if (node.getType() == NodeType.Wall) {
-//                    node.setHeuristic(INFINITY);
-//                    continue;
-//                }
-//                int minH = INFINITY;
-//                for (Node end : ends) {
-//                    int e_row = end.getLocation()[0];
-//                    int e_col = end.getLocation()[1];
-//                    int h = Math.abs(e_row - row) + Math.abs(e_col - col);
-//                    if (h < minH) {
-//                        minH = h;
-//                    }
-//                }
-//                node.setHeuristic(minH);
-//            }
-//        }
+        List<Node> ends = p.getEnd();
+        for (int row = 0; row < p.getHeight(); row++) {
+            for (int col = 0; col < p.getWidth(); col++) {
+                Node node = p.getNode(row, col);
+                if (node.getType() == NodeType.Wall) {
+                    node.setHeuristic(INFINITY);
+                    continue;
+                }
+                int minH = INFINITY;
+                for (Node end : ends) {
+                    int e_row = end.getLocation()[0];
+                    int e_col = end.getLocation()[1];
+                    int h = Math.abs(e_row - row) + Math.abs(e_col - col);
+                    if (h < minH) {
+                        minH = h;
+                    }
+                }
+                node.setHeuristic(minH);
+            }
+        }
     }
 
+    /**
+     * find solution to the puzzle
+     *
+     * @param p the puzzle
+     * @return a list of nodes that represents the solution
+     */
     private List<Node> findSolution(Puzzle p) {
         Node start = p.getStart();
         List<Node> solution = new ArrayList<>();
@@ -150,39 +157,38 @@ public class PuzzleSolver {
      * @return the neighbour cell in the direction specified
      */
     private Node getNeighbourCell(String dir, Puzzle p, Node currNode) {
-//        int height = p.getHeight();
-//        int width = p.getWidth();
-//        int currRow = currNode.getLocation()[0];
-//        int currCol = currNode.getLocation()[1];
-//        switch (dir) {
-//            case "Left":
-//                if (currCol - 1 >= 0) {
-//                    return p.getNode(currRow, currCol - 1);
-//                } else {
-//                    return null;
-//                }
-//            case "Right":
-//                if (currCol + 1 < width) {
-//                    return p.getNode(currRow, currCol + 1);
-//                } else {
-//                    return null;
-//                }
-//            case "Top":
-//                if (currRow - 1 >= 0) {
-//                    return p.getNode(currRow - 1, currCol);
-//                } else {
-//                    return null;
-//                }
-//            case "Bottom":
-//                if (currRow + 1 < height) {
-//                    return p.getNode(currRow + 1, currCol);
-//                } else {
-//                    return null;
-//                }
-//            default:
-//                return null;
-//        }
-        return null;
+        int height = p.getHeight();
+        int width = p.getWidth();
+        int currRow = currNode.getLocation()[0];
+        int currCol = currNode.getLocation()[1];
+        switch (dir) {
+            case "Left":
+                if (currCol - 1 >= 0) {
+                    return p.getNode(currRow, currCol - 1);
+                } else {
+                    return null;
+                }
+            case "Right":
+                if (currCol + 1 < width) {
+                    return p.getNode(currRow, currCol + 1);
+                } else {
+                    return null;
+                }
+            case "Top":
+                if (currRow - 1 >= 0) {
+                    return p.getNode(currRow - 1, currCol);
+                } else {
+                    return null;
+                }
+            case "Bottom":
+                if (currRow + 1 < height) {
+                    return p.getNode(currRow + 1, currCol);
+                } else {
+                    return null;
+                }
+            default:
+                return null;
+        }
     }
 
     /**
