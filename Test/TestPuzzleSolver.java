@@ -34,7 +34,7 @@ public class TestPuzzleSolver {
         try {
             List<Node> solution = ps.hSolvePuzzle(p);
             ps.printHeuristic(p);
-            p.printSolution(solution);
+//            p.printSolution(solution);
         } catch (InvalidPuzzleException e) {
             e.printStackTrace();
         }

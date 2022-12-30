@@ -40,18 +40,19 @@ public class Puzzle {
      * @param width number of nodes in a row
      * @param node root
      */
-    private void initializeOneRow(int width, Node node) {
-        if (width <= 1) {
+    private void initializeOneRow(int width, Node node, int row, int currCol) {
+        if (currCol >= width) {
             return;
         }
         Node rNode = new Node(NodeType.Path);
+        rNode.setLocation(row, currCol);
         node.right = rNode;
         rNode.left = node;
         if (node.top != null) {
             rNode.top = node.top.right;
             node.top.right.bot = rNode;
         }
-        initializeOneRow(width - 1, node.right);
+        initializeOneRow(width, node.right, row, currCol + 1);
     }
 
     /**
@@ -63,8 +64,9 @@ public class Puzzle {
     private void initializePuzzle(int width, int height) {
         Node currNode = root;
         for (int row = 0; row < height; row++) {
-            initializeOneRow(width, currNode);
+            initializeOneRow(width, currNode, row, 0);
             Node bNode = new Node(NodeType.Path);
+            bNode.setLocation(row + 1, 0);
             currNode.bot = bNode;
             bNode.top = currNode;
             currNode = currNode.bot;
@@ -87,7 +89,7 @@ public class Puzzle {
         for (int c = 0; c < col; c++) {
             node = node.right;
         }
-        node.setType(newType);
+        node.type = newType;
         if (newType == NodeType.Start) {
             start = node;
         } else if (newType == NodeType.End) {
