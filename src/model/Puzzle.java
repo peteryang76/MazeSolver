@@ -1,7 +1,9 @@
 package model;
 
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -219,5 +221,13 @@ public class Puzzle {
             }
             System.out.print("\n");
         }
+    }
+
+    public int getNumCol() {
+        return width;
+    }
+
+    public int getNumRow() {
+        return height;
     }
 }
