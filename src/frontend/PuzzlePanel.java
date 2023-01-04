@@ -21,12 +21,17 @@ public class PuzzlePanel extends JPanel {
         }
         int row = puzzle.getNumRow();
         int col = puzzle.getNumCol();
-        System.out.println("\nthis is puzzle: {" +row + ", " + col + "}");
+//        System.out.println("\nthis is puzzle: {" +row + ", " + col + "}");
+        removeAll();
         puzzleTable = new JTable(row, col);
         add(puzzleTable);
     }
 
     public void update() {
         displayPuzzle();
+    }
+
+    public void setPuzzle(Puzzle puzzle) {
+        this.puzzle = puzzle;
     }
 }

@@ -20,14 +20,15 @@ public class PuzzleSolverApp extends JFrame {
         super("Puzzle Solver");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         puzzle = new Puzzle(4, 5);
-        mp = new MenuPanel(puzzle);
         pp = new PuzzlePanel(puzzle);
+        mp = new MenuPanel(puzzle, pp);
         add(mp, BorderLayout.NORTH);
         add(pp, BorderLayout.CENTER);
 
         pack();
         setVisible(true);
         addTimer();
+        t.start();
 
 
     }
@@ -36,7 +37,8 @@ public class PuzzleSolverApp extends JFrame {
         t = new Timer(INTERVAL, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pp.update();
+                pack();
+                setVisible(true);
             }
         });
     }

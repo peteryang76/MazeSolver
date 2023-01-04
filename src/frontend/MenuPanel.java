@@ -19,9 +19,11 @@ public class MenuPanel extends JPanel {
 
     private Puzzle puzzle;
     private Reader reader;
+    private PuzzlePanel pp;
 
-    public MenuPanel(Puzzle puzzle) {
+    public MenuPanel(Puzzle puzzle, PuzzlePanel pp) {
         this.puzzle = puzzle;
+        this.pp = pp;
         reader = new Reader();
         setBackground(Color.LIGHT_GRAY);
         initialize();
@@ -49,6 +51,9 @@ public class MenuPanel extends JPanel {
                 String path = JOptionPane.showInputDialog("What is the path to the file?");
                 try {
                     puzzle = reader.readFromFile(path);
+                    // update puzzle panel so that the new puzzle is displayed
+                    pp.setPuzzle(puzzle);
+                    pp.update();
                 } catch (InvalidFileException invalidFileException) {
                     JOptionPane.showConfirmDialog(load, invalidFileException.getMessage());
                 }
