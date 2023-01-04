@@ -1,6 +1,8 @@
 package frontend;
 
 import Exceptions.InvalidFileException;
+import Exceptions.InvalidPuzzleException;
+import model.Node;
 import model.Puzzle;
 import persistence.Reader;
 
@@ -8,6 +10,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.List;
+
+import backend.PuzzleSolver;
 
 // Panel that displays menus and actions
 public class MenuPanel extends JPanel {
@@ -19,6 +27,9 @@ public class MenuPanel extends JPanel {
 
     private Puzzle puzzle;
     private Reader reader;
+
+    private PuzzlePanel pp;
+    private PuzzleSolver ps;
 
     public MenuPanel(Puzzle puzzle) {
         this.puzzle = puzzle;
@@ -62,23 +73,66 @@ public class MenuPanel extends JPanel {
      */
     private void initializeSave() {
         save = new JButton("Save");
-        //TODO: add action listener
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String path = JOptionPane.showInputDialog("Want is the path save the file?");
+                try {
+                    Writer writer = new FileWriter(path);
+                    writer.write(puzzle.toString());
+                    writer.close();
+                    //puzzle = reader.readFromFile(path);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+        add(save);
     }
 
-    /**
+
+
+    /** may be better if there is a corresponding method in the PuzzlePanel
      * Initialize Solve Button
      */
     private void initializeSolve() {
         solve = new JButton("Solve");
-        //TODO: add action listener
+        solve.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //String path = JOptionPane.showInputDialog("Want to solve the puzzle?");
+                try {
+
+                    List<Node> solution = ps.hSolvePuzzle(puzzle);
+                    System.out.println(solution);
+                } catch (InvalidPuzzleException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                //puzzle = reader.readFromFile(path);
+            }
+        });
+        add(solve);
     }
 
-    /**
+
+    /**? trying to load a new puzzle
      * Initialize new puzzle button
      */
     private void initializeNewPuzzle() {
         newPuzzle = new JButton("New");
-        //TODO: add action listener
-
+        newPuzzle.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                puzzle = null;
+                String path = JOptionPane.showInputDialog("What is the path to the file of the new puzzle?");
+                try {
+                    puzzle = reader.readFromFile(path);
+                } catch (InvalidFileException invalidFileException) {
+                    JOptionPane.showConfirmDialog(load, invalidFileException.getMessage());
+                }
+            }
+        });
+        add(newPuzzle);
     }
 }
