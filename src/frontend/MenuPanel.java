@@ -77,14 +77,7 @@ public class MenuPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String path = JOptionPane.showInputDialog("Want is the path save the file?");
-                try {
-                    Writer writer = new FileWriter(path);
-                    writer.write(puzzle.toString());
-                    writer.close();
-                    //puzzle = reader.readFromFile(path);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+                puzzle.writeToFile(path);
             }
         });
         add(save);
