@@ -2,6 +2,7 @@ package frontend;
 
 import Exceptions.InvalidFileException;
 import Exceptions.InvalidPuzzleException;
+import backend.PuzzleSolver;
 import model.Node;
 import model.Puzzle;
 import persistence.Reader;
@@ -10,12 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.List;
-
-import backend.PuzzleSolver;
 
 // Panel that displays menus and actions
 public class MenuPanel extends JPanel {
@@ -97,7 +93,6 @@ public class MenuPanel extends JPanel {
         solve.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //String path = JOptionPane.showInputDialog("Want to solve the puzzle?");
                 try {
 
                     List<Node> solution = ps.hSolvePuzzle(puzzle);
@@ -113,7 +108,7 @@ public class MenuPanel extends JPanel {
     }
 
 
-    /**? trying to load a new puzzle
+    /**
      * Initialize new puzzle button
      */
     private void initializeNewPuzzle() {
@@ -122,12 +117,11 @@ public class MenuPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 puzzle = null;
-                String path = JOptionPane.showInputDialog("What is the path to the file of the new puzzle?");
-                try {
-                    puzzle = reader.readFromFile(path);
-                } catch (InvalidFileException invalidFileException) {
-                    JOptionPane.showConfirmDialog(load, invalidFileException.getMessage());
-                }
+                int col = Integer.parseInt(JOptionPane.showInputDialog("What is the width of the new puzzle?"));
+                int row = Integer.parseInt(JOptionPane.showInputDialog("What is the height of the new puzzle?"));
+                puzzle = new Puzzle(col, row);
+                pp.setPuzzle(puzzle);
+                pp.update();
             }
         });
         add(newPuzzle);
