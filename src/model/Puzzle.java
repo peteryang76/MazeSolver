@@ -1,6 +1,9 @@
 package model;
 
 
+import frontend.PuzzlePanel;
+
+import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -31,6 +34,8 @@ public class Puzzle {
         this.width = width;
         this.height = height;
         root = new Node(NodeType.Start);
+        root.row = 0;
+        root.col = 0;
         start = root;
         end = new ArrayList<>();
         initializePuzzle(width, height);
@@ -185,6 +190,37 @@ public class Puzzle {
         }
     }
 
+    private void drawHelper(Graphics g, Node node, List<Node> visited, int side) {
+        if (visited.size() == (width * height)) {
+            return;
+        }
+        visited.add(node);
+        node.draw(g, side);
+        if ((node.top != null) && (!visited.contains(node.top))) {
+            drawHelper(g, node.top, visited, side);
+        }
+        if ((node.bot != null) && (!visited.contains(node.bot))) {
+            drawHelper(g, node.bot, visited, side);
+        }
+        if ((node.left != null) && (!visited.contains(node.left))) {
+            drawHelper(g, node.left, visited, side);
+        }
+        if ((node.right != null) && (!visited.contains(node.right))) {
+            drawHelper(g, node.right, visited, side);
+        }
+    }
+
+    public void draw(Graphics g) {
+        int canvasSide = PuzzlePanel.WIDTH;
+        int side = 0;
+        if (width > height) {
+            side = canvasSide/width;
+        } else {
+            side = canvasSide/height;
+        }
+        drawHelper(g, root, new ArrayList<>(), side);
+    }
+
     public void printPuzzle() {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
@@ -230,4 +266,6 @@ public class Puzzle {
     public int getNumRow() {
         return height;
     }
+
+
 }
