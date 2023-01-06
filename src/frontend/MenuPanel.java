@@ -27,8 +27,8 @@ public class MenuPanel extends JPanel {
 
     private PuzzleSolver ps;
     
-    public MenuPanel(Puzzle puzzle, PuzzlePanel pp) {
-        this.puzzle = puzzle;
+    public MenuPanel (PuzzlePanel pp) {
+        this.puzzle = null;
         this.pp = pp;
         reader = new Reader();
         setBackground(Color.LIGHT_GRAY);
@@ -116,7 +116,6 @@ public class MenuPanel extends JPanel {
         newPuzzle.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                puzzle = null;
                 int col = Integer.parseInt(JOptionPane.showInputDialog("What is the width of the new puzzle?"));
                 int row = Integer.parseInt(JOptionPane.showInputDialog("What is the height of the new puzzle?"));
                 puzzle = new Puzzle(col, row);

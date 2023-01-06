@@ -1,5 +1,9 @@
 package model;
 
+import frontend.PuzzlePanel;
+
+import java.awt.*;
+
 public class Node {
     double heuristic;
     NodeType type;
@@ -9,8 +13,11 @@ public class Node {
     Node top;
     Node bot;
 
+    // this is 0-index
     int row;
     int col;
+
+    private static final Color backgroundColor = new Color(255,235,175);
 
     public Node(NodeType type){
         this.type = type;
@@ -55,6 +62,27 @@ public class Node {
 
     public int[] getLocation() {
         return new int[] {row, col};
+    }
+
+    /**
+     * draw each node according to its type and its neighbours
+     * node are be drawn as squares
+     * @param g the canvas to draw on
+     * @param side the length of side of each node
+     * NOTE: the row is y-axis and col is x-axis
+     */
+    public void draw(Graphics g, int side) {
+        int y = PuzzlePanel.HEIGHT;
+        if (type == NodeType.Path) {
+            g.setColor(backgroundColor);
+            g.fillRect(col * side, row * side, side, side);
+        } else if (type == NodeType.Start) {
+            g.setColor(Color.red);
+            g.fillOval(col * side, row * side, side, side);
+            g.setColor(backgroundColor);
+        }
+//        g.setColor(backgroundColor);
+//        g.fillRect(0, 0, side, side);
     }
 
 }

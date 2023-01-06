@@ -3,6 +3,7 @@ package frontend;
 import model.Puzzle;
 
 import javax.swing.*;
+import java.awt.*;
 
 // Panel that displays puzzle
 public class PuzzlePanel extends JPanel {
@@ -10,9 +11,24 @@ public class PuzzlePanel extends JPanel {
     private Puzzle puzzle;
     private JTable puzzleTable;
 
+    public static final int WIDTH = 500;
+    public static final int HEIGHT = 500;
+
     public PuzzlePanel(Puzzle puzzle) {
         this.puzzle = puzzle;
-        displayPuzzle();
+        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+//        displayPuzzle();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        drawPuzzle(g);
+    }
+
+    private void drawPuzzle(Graphics g) {
+        puzzle.draw(g);
     }
 
     private void displayPuzzle() {
@@ -21,7 +37,6 @@ public class PuzzlePanel extends JPanel {
         }
         int row = puzzle.getNumRow();
         int col = puzzle.getNumCol();
-//        System.out.println("\nthis is puzzle: {" +row + ", " + col + "}");
         removeAll();
         puzzleTable = new JTable(row, col);
         add(puzzleTable);
