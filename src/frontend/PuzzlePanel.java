@@ -17,7 +17,6 @@ public class PuzzlePanel extends JPanel {
     public PuzzlePanel(Puzzle puzzle) {
         this.puzzle = puzzle;
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
-//        displayPuzzle();
     }
 
     @Override
