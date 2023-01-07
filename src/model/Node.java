@@ -5,13 +5,14 @@ import frontend.PuzzlePanel;
 import java.awt.*;
 
 public class Node {
-    double heuristic;
-    NodeType type;
 
-    Node left;
-    Node right;
-    Node top;
-    Node bot;
+    double heuristic;
+    public NodeType type;
+
+    public Node left;
+    public Node right;
+    public Node top;
+    public Node bot;
 
     // this is 0-index
     int row;

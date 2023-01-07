@@ -1,5 +1,6 @@
 package frontend;
 
+import model.NodeType;
 import model.Puzzle;
 
 import javax.swing.*;
@@ -21,9 +22,12 @@ public class PuzzleSolverApp extends JFrame {
         super("Puzzle Solver");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         puzzle = new Puzzle(4, 5);
+        puzzle.setCell(0, 1, NodeType.Start);
         pp = new PuzzlePanel(puzzle);
         mp = new MenuPanel(pp);
         ep = new EditPanel(pp);
+
+        mp.setPuzzle(puzzle);
 
         add(mp, BorderLayout.NORTH);
         add(pp, BorderLayout.CENTER);

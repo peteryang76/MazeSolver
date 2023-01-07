@@ -125,4 +125,14 @@ public class MenuPanel extends JPanel {
         });
         add(newPuzzle);
     }
+
+    /**
+     * This is only for testing purpose
+     * DO NOT USE THIS IN THE FINAL PROJECT!!!
+     * @param puzzle the puzzle to be set as
+     */
+    public void setPuzzle(Puzzle puzzle) {
+        this.puzzle = puzzle;
+
+    }
 }

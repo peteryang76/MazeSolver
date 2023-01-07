@@ -70,12 +70,13 @@ public class Puzzle {
      */
     private void initializePuzzle(int width, int height) {
         Node currNode = root;
-        for (int row = 0; row < height; row++) {
-            initializeOneRow(width, currNode, row, 0);
+        initializeOneRow(width, currNode, 0, 1);
+        for (int row = 1; row < height; row++) {
             Node bNode = new Node(NodeType.Path);
             bNode.setLocation(row + 1, 0);
             currNode.bot = bNode;
             bNode.top = currNode;
+            initializeOneRow(width, bNode, row, 1);
             currNode = currNode.bot;
         }
     }
@@ -98,6 +99,7 @@ public class Puzzle {
         }
         node.type = newType;
         if (newType == NodeType.Start) {
+            start.setType(NodeType.Path);
             start = node;
         } else if (newType == NodeType.End) {
             end.add(node);
