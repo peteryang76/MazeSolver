@@ -1,4 +1,5 @@
 import Exceptions.InvalidFileException;
+import model.Node;
 import model.NodeType;
 import model.Puzzle;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,9 +35,21 @@ public class TestPuzzle {
     }
 
     @Test
+    void testSimplePuzzle() {
+        puzzle = new Puzzle(1, 1);
+        assertEquals(NodeType.Start, puzzle.getNode(0, 0).getType());
+        Node root = puzzle.getNode(0, 0);
+        assertNull(root.left);
+        assertNull(root.right);
+        assertNull(root.bot);
+        assertNull(root.top);
+    }
+
+    @Test
     void testSetCell() {
         puzzle.setCell(2, 3, NodeType.Start);
         assertEquals(NodeType.Start, puzzle.getNode(2, 3).getType());
+        assertEquals(NodeType.Path, puzzle.getNode(0, 0).getType());
         assertFalse(puzzle.isValid());
         puzzle.setCell(puzzle.getWidth() - 1, puzzle.getHeight() - 1, NodeType.End);
         puzzle.printPuzzle();

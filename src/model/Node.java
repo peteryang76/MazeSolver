@@ -5,13 +5,14 @@ import frontend.PuzzlePanel;
 import java.awt.*;
 
 public class Node {
-    double heuristic;
-    NodeType type;
 
-    Node left;
-    Node right;
-    Node top;
-    Node bot;
+    double heuristic;
+    public NodeType type;
+
+    public Node left;
+    public Node right;
+    public Node top;
+    public Node bot;
 
     // this is 0-index
     int row;
@@ -73,16 +74,15 @@ public class Node {
      */
     public void draw(Graphics g, int side) {
         int y = PuzzlePanel.HEIGHT;
-        if (type == NodeType.Path) {
+        g.setColor(backgroundColor);
+        g.fillRect(col * side, row * side, side, side);
+        if (type == NodeType.Start) {
             g.setColor(backgroundColor);
             g.fillRect(col * side, row * side, side, side);
-        } else if (type == NodeType.Start) {
             g.setColor(Color.red);
             g.fillOval(col * side, row * side, side, side);
             g.setColor(backgroundColor);
         }
-//        g.setColor(backgroundColor);
-//        g.fillRect(0, 0, side, side);
     }
 
 }
