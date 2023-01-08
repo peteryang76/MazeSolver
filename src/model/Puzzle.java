@@ -73,7 +73,7 @@ public class Puzzle {
         initializeOneRow(width, currNode, 0, 1);
         for (int row = 1; row < height; row++) {
             Node bNode = new Node(NodeType.Path);
-            bNode.setLocation(row + 1, 0);
+            bNode.setLocation(row, 0);
             currNode.bot = bNode;
             bNode.top = currNode;
             initializeOneRow(width, bNode, row, 1);
@@ -219,19 +219,38 @@ public class Puzzle {
         }
     }
 
+    private void drawBorders(Graphics g, int length, int width, int height) {
+        Color backgroundColor = g.getColor();
+        int offset = PuzzlePanel.OFFSET;
+        g.setColor(Color.BLACK);
+        // draw top border
+        g.fillRect(offset - length, offset - length, width + 2 * length, length);
+        // draw left border
+        g.fillRect(offset - length, offset - length, length, height + 2 * length);
+        // draw right border
+        g.fillRect(offset + width, offset - length, length, height + 2 * length);
+        // draw bottom border
+        g.fillRect(offset - length, offset + height, width + 2 * length, length);
+        g.setColor(backgroundColor);
+    }
+
     /**
      * draw puzzle on canvas
      * @param g canvas
      */
     public void draw(Graphics g) {
-        int canvasSide = PuzzlePanel.WIDTH;
-        int side = 0;
+        int canvasSide = PuzzlePanel.WIDTH - 2 * PuzzlePanel.OFFSET;
+        int side;
         if (width > height) {
             side = canvasSide/width;
         } else {
             side = canvasSide/height;
         }
         drawHelper(g, root, new ArrayList<>(), side);
+        int borderWidth = side/5;
+        int canvasWidth = side * width;
+        int canvasHeight = side * height;
+        drawBorders(g, borderWidth, canvasWidth, canvasHeight);
     }
 
     public void printPuzzle() {

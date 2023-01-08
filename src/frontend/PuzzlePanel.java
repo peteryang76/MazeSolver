@@ -11,8 +11,10 @@ public class PuzzlePanel extends JPanel {
     private Puzzle puzzle;
     private JTable puzzleTable;
 
-    public static final int WIDTH = 500;
-    public static final int HEIGHT = 500;
+    // Please set WIDTH = HEIGHT = 500 + 2 * OFFSET
+    public static final int WIDTH = 600;
+    public static final int HEIGHT = 600;
+    public static final int OFFSET = 50;
 
     public PuzzlePanel(Puzzle puzzle) {
         this.puzzle = puzzle;
@@ -27,22 +29,10 @@ public class PuzzlePanel extends JPanel {
     }
 
     private void drawPuzzle(Graphics g) {
-        puzzle.draw(g);
-    }
-
-    private void displayPuzzle() {
         if (puzzle == null) {
             return;
         }
-        int row = puzzle.getNumRow();
-        int col = puzzle.getNumCol();
-        removeAll();
-        puzzleTable = new JTable(row, col);
-        add(puzzleTable);
-    }
-
-    public void update() {
-        displayPuzzle();
+        puzzle.draw(g);
     }
 
     public void setPuzzle(Puzzle puzzle) {
