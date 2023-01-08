@@ -193,7 +193,7 @@ public class Puzzle {
     }
 
     /**
-     * Helper function for draw
+     * Helper function for draw.
      * @param g canvas
      * @param node current node to draw
      * @param visited node that has been drawn
