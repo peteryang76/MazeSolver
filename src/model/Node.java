@@ -65,6 +65,11 @@ public class Node {
         return new int[] {row, col};
     }
 
+    /**
+     * Helper function that draw walls
+     * @param g the canvas
+     * @param side length of side of each node
+     */
     private void drawWall(Graphics g, int side) {
         g.setColor(Color.BLACK);
         int offset = PuzzlePanel.OFFSET;
