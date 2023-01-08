@@ -1,6 +1,5 @@
 package frontend;
 
-import model.NodeType;
 import model.Puzzle;
 
 import javax.swing.*;
@@ -21,8 +20,7 @@ public class PuzzleSolverApp extends JFrame {
     public PuzzleSolverApp() {
         super("Puzzle Solver");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        puzzle = new Puzzle(4, 5);
-        puzzle.setCell(0, 1, NodeType.Start);
+        puzzle = null;
         pp = new PuzzlePanel(puzzle);
         mp = new MenuPanel(pp);
         ep = new EditPanel(pp);
@@ -34,6 +32,7 @@ public class PuzzleSolverApp extends JFrame {
         add(ep, BorderLayout.SOUTH);
 
         pack();
+        centreOnScreen();
         setVisible(true);
         addTimer();
         t.start();
@@ -46,8 +45,12 @@ public class PuzzleSolverApp extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 pp.repaint();
-//                setVisible(true);
             }
         });
+    }
+
+    private void centreOnScreen() {
+        Dimension scrn = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((scrn.width - getWidth()) / 2, (scrn.height - getHeight()) / 2);
     }
 }

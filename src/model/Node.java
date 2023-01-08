@@ -65,6 +65,25 @@ public class Node {
         return new int[] {row, col};
     }
 
+    private void drawWall(Graphics g, int side) {
+        g.setColor(Color.BLACK);
+        int offset = PuzzlePanel.OFFSET;
+        int length = side/5;
+        if ((top != null) && (top.type == NodeType.Wall)) {
+            g.fillRect(offset + col * side + 2 * length, offset + row * side, length, 3 * length);
+        }
+        if ((bot != null) && (bot.type == NodeType.Wall)) {
+            g.fillRect(offset + col * side + 2 * length, offset + row * side + 2 * length, length, 3 * length);
+        }
+        if ((left != null) && (left.type == NodeType.Wall)) {
+            g.fillRect(offset + col * side, offset + row * side + 2 * length, 3 * length, length);
+        }
+        if ((right != null) && (right.type == NodeType.Wall)) {
+            g.fillRect(offset + col * side + 2 * length, offset + row * side + 2 * length, 3 * length, length);
+        }
+        g.fillRect(offset + col * side + 2 * length, offset + row * side + 2 * length, length, length);
+    }
+
     /**
      * draw each node according to its type and its neighbours
      * node are be drawn as squares
@@ -73,15 +92,18 @@ public class Node {
      * NOTE: the row is y-axis and col is x-axis
      */
     public void draw(Graphics g, int side) {
-        int y = PuzzlePanel.HEIGHT;
+        int offset = PuzzlePanel.OFFSET;
         g.setColor(backgroundColor);
-        g.fillRect(col * side, row * side, side, side);
+        g.fillRect(offset + col * side, offset + row * side, side, side);
         if (type == NodeType.Start) {
-            g.setColor(backgroundColor);
-            g.fillRect(col * side, row * side, side, side);
             g.setColor(Color.red);
-            g.fillOval(col * side, row * side, side, side);
+            g.fillOval(offset + col * side, offset + row * side, side, side);
             g.setColor(backgroundColor);
+        } else if (type == NodeType.End) {
+            g.setColor(Color.BLUE);
+            g.fillRect(offset + col * side, offset + row * side, side, side);
+        } else if (type == NodeType.Wall) {
+            drawWall(g, side);
         }
     }
 

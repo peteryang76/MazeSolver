@@ -59,7 +59,6 @@ public class MenuPanel extends JPanel {
                     puzzle = reader.readFromFile(path);
                     // update puzzle panel so that the new puzzle is displayed
                     pp.setPuzzle(puzzle);
-                    pp.update();
                 } catch (InvalidFileException invalidFileException) {
                     JOptionPane.showConfirmDialog(load, invalidFileException.getMessage());
                 }
@@ -101,7 +100,6 @@ public class MenuPanel extends JPanel {
                     throw new RuntimeException(ex);
                 }
 
-                //puzzle = reader.readFromFile(path);
             }
         });
         add(solve);
@@ -120,7 +118,6 @@ public class MenuPanel extends JPanel {
                 int row = Integer.parseInt(JOptionPane.showInputDialog("What is the height of the new puzzle?"));
                 puzzle = new Puzzle(col, row);
                 pp.setPuzzle(puzzle);
-                pp.update();
             }
         });
         add(newPuzzle);
