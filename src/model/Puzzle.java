@@ -192,6 +192,13 @@ public class Puzzle {
         }
     }
 
+    /**
+     * Helper function for draw.
+     * @param g canvas
+     * @param node current node to draw
+     * @param visited node that has been drawn
+     * @param side length of side for each node
+     */
     private void drawHelper(Graphics g, Node node, List<Node> visited, int side) {
         if (visited.size() == (width * height)) {
             return;
@@ -212,6 +219,10 @@ public class Puzzle {
         }
     }
 
+    /**
+     * draw puzzle on canvas
+     * @param g canvas
+     */
     public void draw(Graphics g) {
         int canvasSide = PuzzlePanel.WIDTH;
         int side = 0;
