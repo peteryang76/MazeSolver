@@ -38,4 +38,8 @@ public class PuzzlePanel extends JPanel {
     public void setPuzzle(Puzzle puzzle) {
         this.puzzle = puzzle;
     }
+
+    public Puzzle getPuzzle(){
+        return this.puzzle;
+    }
 }
