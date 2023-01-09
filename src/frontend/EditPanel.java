@@ -42,9 +42,9 @@ public class EditPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 puzzle = pp.getPuzzle();
+                puzzle.setCell(cont/puzzle.getWidth(),cont%puzzle.getWidth(), NodeType.Wall);
                 cont++;
-                puzzle.setCell(cont/puzzle.getWidth(),cont/puzzle.getWidth(), NodeType.Wall);
-                pp.setPuzzle(puzzle);
+                //pp.setPuzzle(puzzle);
             }
         });
 
@@ -58,9 +58,9 @@ public class EditPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 puzzle = pp.getPuzzle();
+                puzzle.setCell(cont/puzzle.getWidth(),cont%puzzle.getWidth(), NodeType.Path);
                 cont++;
-                puzzle.setCell(cont/puzzle.getWidth(),cont/puzzle.getWidth(), NodeType.Path);
-                pp.setPuzzle(puzzle);
+//                pp.setPuzzle(puzzle);
             }
         });
 
@@ -74,9 +74,9 @@ public class EditPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 puzzle = pp.getPuzzle();
+                puzzle.setCell(cont/puzzle.getWidth(),cont%puzzle.getWidth(), NodeType.Start);
                 cont++;
-                puzzle.setCell(cont/puzzle.getWidth(),cont/puzzle.getWidth(), NodeType.Start);
-                pp.setPuzzle(puzzle);
+//                pp.setPuzzle(puzzle);
 
             }
         });
@@ -90,9 +90,9 @@ public class EditPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 puzzle = pp.getPuzzle();
+                puzzle.setCell(cont/puzzle.getWidth(),cont%puzzle.getWidth(), NodeType.End);
                 cont++;
-                puzzle.setCell(cont/puzzle.getWidth(),cont/puzzle.getWidth(), NodeType.End);
-                pp.setPuzzle(puzzle);
+//                pp.setPuzzle(puzzle);
             }
         });
 
