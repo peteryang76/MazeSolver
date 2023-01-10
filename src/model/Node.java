@@ -87,6 +87,7 @@ public class Node {
             g.fillRect(offset + col * side + 2 * length, offset + row * side + 2 * length, 3 * length, length);
         }
         g.fillRect(offset + col * side + 2 * length, offset + row * side + 2 * length, length, length);
+
     }
 
     /**
