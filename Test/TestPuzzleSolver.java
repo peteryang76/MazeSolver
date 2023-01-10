@@ -8,8 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import persistence.Reader;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
@@ -49,7 +47,6 @@ public class TestPuzzleSolver {
         try {
             p = reader.readFromFile("data/testSimple.txt");
             List<Node> solution = ps.hSolvePuzzle(p);
-            p.printPuzzle();
 //            ps.printHeuristic(p);
             p.printSolution(solution);
         } catch (InvalidFileException e) {

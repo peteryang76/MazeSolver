@@ -17,15 +17,16 @@ public class Puzzle {
     private Node root;
     private int width;
     private int height;
+    private int side;
 
     private Node start;
     private List<Node> end;
 
     // row : in which row
-    //col  : in which column
+    // col : in which column
 
     /**
-     * Initialize puzzle such that every cell is a path
+     * Initialize puzzle such that every node is a path
      *
      * @param width  width of the puzzle
      * @param height height of the puzzle
@@ -36,6 +37,12 @@ public class Puzzle {
         root = new Node(NodeType.Start);
         root.row = 0;
         root.col = 0;
+        int canvasSide = PuzzlePanel.WIDTH - 2 * PuzzlePanel.OFFSET;
+        if (width > height) {
+            side = canvasSide/width;
+        } else {
+            side = canvasSide/height;
+        }
         start = root;
         end = new ArrayList<>();
         initializePuzzle(width, height);
@@ -239,42 +246,17 @@ public class Puzzle {
      * @param g canvas
      */
     public void draw(Graphics g) {
-        int canvasSide = PuzzlePanel.WIDTH - 2 * PuzzlePanel.OFFSET;
-        int side;
-        if (width > height) {
-            side = canvasSide/width;
-        } else {
-            side = canvasSide/height;
-        }
+//        int canvasSide = PuzzlePanel.WIDTH - 2 * PuzzlePanel.OFFSET;
+//        if (width > height) {
+//            side = canvasSide/width;
+//        } else {
+//            side = canvasSide/height;
+//        }
         drawHelper(g, root, new ArrayList<>(), side);
         int borderWidth = side/5;
         int canvasWidth = side * width;
         int canvasHeight = side * height;
         drawBorders(g, borderWidth, canvasWidth, canvasHeight);
-    }
-
-    public void printPuzzle() {
-        for (int row = 0; row < height; row++) {
-            for (int col = 0; col < width; col++) {
-                NodeType type = this.getNode(row, col).getType();
-                switch (type) {
-                    case Path:
-                        System.out.print(' ');
-                        break;
-                    case Wall:
-                        System.out.print('-');
-                        break;
-                    case End:
-                        System.out.print('e');
-                        break;
-                    case Start:
-                        System.out.print('s');
-                        break;
-                }
-
-            }
-            System.out.print("\n");
-        }
     }
 
     public void printSolution(List<Node> solution) {
@@ -291,12 +273,8 @@ public class Puzzle {
         }
     }
 
-    public int getNumCol() {
-        return width;
-    }
-
-    public int getNumRow() {
-        return height;
+    public int getSide() {
+        return side;
     }
 
 

@@ -52,7 +52,6 @@ public class TestPuzzle {
         assertEquals(NodeType.Path, puzzle.getNode(0, 0).getType());
         assertFalse(puzzle.isValid());
         puzzle.setCell(puzzle.getWidth() - 1, puzzle.getHeight() - 1, NodeType.End);
-        puzzle.printPuzzle();
         assertEquals(NodeType.End, puzzle.getNode(puzzle.getWidth() - 1, puzzle.getHeight() - 1).getType());
         assertTrue(puzzle.isValid());
     }
@@ -73,7 +72,6 @@ public class TestPuzzle {
     void testReadNormalFile(){
         try {
             puzzle = reader.readFromFile("./data/success.txt");
-            puzzle.printPuzzle();
             assertTrue(puzzle.isValid());
             assertEquals(NodeType.Start, puzzle.getNode(2,4).getType());
             assertEquals(NodeType.End,puzzle.getNode(3,5).getType());
