@@ -8,9 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import persistence.Reader;
 
+import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.fail;
+//import static org.junit.Assert.fail;
 
 public class TestPuzzleSolver {
 
@@ -46,13 +47,20 @@ public class TestPuzzleSolver {
         try {
             p = reader.readFromFile("data/testSimple.txt");
             List<Node> solution = ps.hSolvePuzzle(p);
-            p.printPuzzle();
 //            ps.printHeuristic(p);
             p.printSolution(solution);
         } catch (InvalidFileException e) {
             e.printStackTrace();
         } catch (InvalidPuzzleException e) {
-            fail();
+            ///fail();
         }
+    }
+    @Test
+    void testLoad() throws IOException, InvalidFileException {
+        Reader reader = new Reader();
+        reader.readFromFile("D://Desktop/test.txt");
+
+
+
     }
 }

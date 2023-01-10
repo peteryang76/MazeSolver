@@ -1,6 +1,6 @@
 package frontend;
 
-import model.Puzzle;
+import model.NodeType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,13 +9,11 @@ import java.awt.event.ActionListener;
 
 public class EditPanel extends JPanel {
 
-    private Puzzle puzzle;
     private PuzzlePanel pp;
 
-    private JButton wall, path, start, end;
+    private JButton wall, start, end;
 
     public EditPanel(PuzzlePanel pp) {
-        this.puzzle = null;
         setBackground(Color.LIGHT_GRAY);
         this.pp = pp;
         initialize();
@@ -23,30 +21,46 @@ public class EditPanel extends JPanel {
 
     private void initialize() {
         initializeWall();
-        initializePath();
         initializeStart();
         initializeEnd();
     }
 
     private void initializeWall() {
+
         wall = new JButton("Add Wall");
         wall.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                pp.setCursorState(NodeType.Wall);
             }
         });
-    }
-
-    private void initializePath() {
-
+        add(wall);
     }
 
     private void initializeStart() {
 
+        start = new JButton("Add Start");
+        start.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                pp.setCursorState(NodeType.Start);
+
+            }
+        });
+        add(start);
     }
 
     private void initializeEnd() {
 
+        end = new JButton("Add End");
+        end.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                pp.setCursorState(NodeType.End);
+            }
+        });
+
+        add(end);
     }
+
 }

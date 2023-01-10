@@ -74,19 +74,33 @@ public class Node {
         g.setColor(Color.BLACK);
         int offset = PuzzlePanel.OFFSET;
         int length = side/5;
-        if ((top != null) && (top.type == NodeType.Wall)) {
-            g.fillRect(offset + col * side + 2 * length, offset + row * side, length, 3 * length);
+        if (top == null || (top.type == NodeType.Wall)) {
+            drawLine(g, side, offset, length, "Top");
         }
-        if ((bot != null) && (bot.type == NodeType.Wall)) {
-            g.fillRect(offset + col * side + 2 * length, offset + row * side + 2 * length, length, 3 * length);
+        if (bot == null || (bot.type == NodeType.Wall)) {
+            drawLine(g, side, offset, length, "Bot");
         }
-        if ((left != null) && (left.type == NodeType.Wall)) {
-            g.fillRect(offset + col * side, offset + row * side + 2 * length, 3 * length, length);
+        if (left == null || (left.type == NodeType.Wall)) {
+            drawLine(g, side, offset, length, "Left");
         }
-        if ((right != null) && (right.type == NodeType.Wall)) {
-            g.fillRect(offset + col * side + 2 * length, offset + row * side + 2 * length, 3 * length, length);
+        if (right == null || (right.type == NodeType.Wall)) {
+            drawLine(g, side, offset, length, "Right");
         }
         g.fillRect(offset + col * side + 2 * length, offset + row * side + 2 * length, length, length);
+
+    }
+
+    private void drawLine(Graphics g, int side, int offset, int length, String dir) {
+        if (dir.equals("Top")) {
+            g.fillRect(offset + col * side + 2 * length, offset + row * side, length, 3 * length);
+        } else if (dir.equals("Bot")) {
+            g.fillRect(offset + col * side + 2 * length, offset + row * side + 2 * length, length, 3 * length);
+        } else if (dir.equals("Left")) {
+            g.fillRect(offset + col * side, offset + row * side + 2 * length, 3 * length, length);
+        } else if (dir.equals("Right")) {
+            g.fillRect(offset + col * side + 2 * length, offset + row * side + 2 * length, 3 * length, length);
+        }
+
     }
 
     /**
