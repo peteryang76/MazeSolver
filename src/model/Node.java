@@ -20,6 +20,10 @@ public class Node {
 
     private static final Color backgroundColor = new Color(255,235,175);
 
+    /**
+     * Create a node
+     * @param type type of node
+     */
     public Node(NodeType type){
         this.type = type;
         left = null;
@@ -56,6 +60,11 @@ public class Node {
         return heuristic;
     }
 
+    /**
+     * Set this.row = row, this.col = col
+     * @param row number of row the node is located
+     * @param col number of col the node is located
+     */
     public void setLocation(int row, int col) {
         this.row = row;
         this.col = col;
@@ -90,6 +99,14 @@ public class Node {
 
     }
 
+    /**
+     * Helper function for drawWall, draw a line from the center to the correct direction
+     * @param g the canvas
+     * @param side length of side of each node
+     * @param offset number of pixels away from borders
+     * @param length length of the line
+     * @param dir the direction of the line
+     */
     private void drawLine(Graphics g, int side, int offset, int length, String dir) {
         if (dir.equals("Top")) {
             g.fillRect(offset + col * side + 2 * length, offset + row * side, length, 3 * length);
