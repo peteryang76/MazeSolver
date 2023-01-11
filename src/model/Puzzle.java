@@ -226,6 +226,13 @@ public class Puzzle {
         }
     }
 
+    /**
+     * draw borders that surround the puzzle
+     * @param g the canvas
+     * @param length length of each line
+     * @param width width of the puzzle
+     * @param height height of the puzzle
+     */
     private void drawBorders(Graphics g, int length, int width, int height) {
         Color backgroundColor = g.getColor();
         int offset = PuzzlePanel.OFFSET;
@@ -246,12 +253,6 @@ public class Puzzle {
      * @param g canvas
      */
     public void draw(Graphics g) {
-//        int canvasSide = PuzzlePanel.WIDTH - 2 * PuzzlePanel.OFFSET;
-//        if (width > height) {
-//            side = canvasSide/width;
-//        } else {
-//            side = canvasSide/height;
-//        }
         drawHelper(g, root, new ArrayList<>(), side);
         int borderWidth = side/5;
         int canvasWidth = side * width;
