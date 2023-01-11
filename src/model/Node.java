@@ -123,6 +123,9 @@ public class Node {
             g.fillRect(offset + col * side, offset + row * side, side, side);
         } else if (type == NodeType.Wall) {
             drawWall(g, side);
+        } else if (type == NodeType.Solution) {
+            g.setColor(Color.RED);
+            g.fillRect(offset + col * side, offset + row * side, side, side);
         }
     }
 
