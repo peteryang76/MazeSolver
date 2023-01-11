@@ -6,7 +6,7 @@ public enum NodeType {
     Wall,
     Start,
     End,
-    Path
-
+    Path,
+    Solution
 
 }
