@@ -19,12 +19,18 @@ public class EditPanel extends JPanel {
         initialize();
     }
 
+    /**
+     * Initialize components
+     */
     private void initialize() {
         initializeWall();
         initializeStart();
         initializeEnd();
     }
 
+    /**
+     * Initialize Wall button
+     */
     private void initializeWall() {
 
         wall = new JButton("Add Wall");
