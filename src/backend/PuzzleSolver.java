@@ -19,8 +19,6 @@ public class PuzzleSolver {
         if (!p.isValid()) {
             throw new InvalidPuzzleException("The puzzle does not have a start or an end");
         }
-        constructHeuristic(p);
-        printHeuristic(p);
         return findSolution(p);
     }
 
@@ -28,7 +26,7 @@ public class PuzzleSolver {
      * Set heuristic value for each cell in the puzzle according to their distance to the nearest end
      * @param p the puzzle to be set
      */
-    private void constructHeuristic(Puzzle p) {
+/*    private void constructHeuristic(Puzzle p) {
         List<Node> ends = p.getEnd();
         for (int row = 0; row < p.getHeight(); row++) {
             for (int col = 0; col < p.getWidth(); col++) {
@@ -49,7 +47,7 @@ public class PuzzleSolver {
                 node.setHeuristic(minH);
             }
         }
-    }
+    }*/
 
     /**
      * find solution to the puzzle
@@ -59,10 +57,78 @@ public class PuzzleSolver {
      */
     private List<Node> findSolution(Puzzle p) {
         Node start = p.getStart();
-        List<Node> solution = new ArrayList<>();
-        List<Node> visited = new ArrayList<>();
-        return findSolutionHelper(p, start, solution, visited);
+        Node end = p.getEnd();
+        return findPath(p, start, end);
     }
+
+    public List<Node> findPath(Puzzle p, Node start, Node goal) {
+        PriorityQueue<Node> openSet = new PriorityQueue<>();
+        Set<Node> closedSet = new HashSet<>();
+        HashMap<Node, Node> parent = new HashMap<>();
+        HashMap<Node, Double> g = new HashMap<Node, Double>();
+        HashMap<Node, Double> h = new HashMap<Node, Double>();
+        HashMap<Node, Double> f = new HashMap<Node, Double>();
+        g.put(start, 0.0);
+        h.put(start, distance(start, goal));
+        f.put(start, g.get(start) + h.get(start));
+        openSet.add(start);
+
+        while (!openSet.isEmpty()) {
+            Node current = openSet.poll();
+
+            if (current.equals(goal)) {
+                List<Node> reversedPath = new ArrayList<>();
+                while (current != start) {
+                    reversedPath.add(current);
+                    current = parent.get(current);
+                }
+                reversedPath.add(start);
+                return reversedPath;
+            }
+
+            closedSet.add(current);
+
+            for (Node neighbor : getNeighbors(p, current)) {
+                if (closedSet.contains(neighbor)) {
+                    continue;
+                }
+                double gScore = distance(current, neighbor);
+                double hScore = distance(neighbor, goal);
+                double fScore = g.get(current) + gScore + hScore;
+                if (!f.containsKey(neighbor) || fScore < f.get(neighbor)) {
+                    parent.put(neighbor, current);
+                    g.put(neighbor, g.get(current) + gScore);
+                    f.put(neighbor, fScore);
+                    openSet.add(neighbor);
+                }
+            }
+        }
+
+        return null; // No path found
+    }
+
+    private List<Node> getNeighbors(Puzzle p, Node node) {
+        List<Node> neighbors = new ArrayList<>();
+
+        int[] dx = {0, 0, 1, -1}; // Possible movement directions
+        int[] dy = {1, -1, 0, 0};
+
+        for (int i = 0; i < 4; i++) {
+            int nx = node.col + dx[i];
+            int ny = node.row + dy[i];
+
+            if (nx >= 0 && nx < p.getWidth() && ny >= 0 && ny < p.getHeight() && p.getNode(ny, nx).getType() != NodeType.Wall) {
+                neighbors.add(p.getNode(ny, nx));
+            }
+        }
+
+        return neighbors;
+    }
+
+    private double distance(Node a, Node b) {
+        return Math.sqrt(Math.pow(a.col - b.col, 2) + Math.pow(a.row - b.row, 2));
+    }
+
 
     private List<Node> findSolutionHelper(Puzzle p, Node currNode, List<Node> solution, List<Node> visited) {
         if (currNode.getH() == 0) {

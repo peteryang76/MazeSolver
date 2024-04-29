@@ -1,16 +1,19 @@
 package frontend;
 
 import Exceptions.InvalidFileException;
+import Exceptions.InvalidPuzzleException;
 import backend.PuzzleSolver;
 import model.Node;
 import model.NodeType;
 import model.Puzzle;
 import persistence.Reader;
 
+import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 // Panel that displays menus and actions
 public class MenuPanel extends JPanel {
@@ -83,6 +86,10 @@ public class MenuPanel extends JPanel {
     }
 
 
+    private void drawSolution(List<Node> solution) {
+
+    }
+
 
     /** may be better if there is a corresponding method in the PuzzlePanel
      * Initialize Solve Button
@@ -92,17 +99,17 @@ public class MenuPanel extends JPanel {
         solve.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                try {
+                try {
 
-//                    List<Node> solution = ps.hSolvePuzzle(puzzle);
-////                    pp.setSolution(solution);
-//                    Node sol = new Node(NodeType.Solution);
-//                    sol.setLocation(2, 2);
-//                    sol.bot = new Node(NodeType.End);
-//                    pp.setSolution(sol);
-//                } catch (InvalidPuzzleException ex) {
-//                    throw new RuntimeException(ex);
-//                }
+                    List<Node> solution = ps.hSolvePuzzle(puzzle);
+//                    pp.setSolution(solution);
+                    Node sol = new Node(NodeType.Solution);
+                    sol.setLocation(2, 2);
+                    sol.bot = new Node(NodeType.End);
+                    pp.setSolution(sol);
+                } catch (InvalidPuzzleException ex) {
+                    throw new RuntimeException(ex);
+                }
                 Node sol = new Node(NodeType.Solution);
                 sol.setLocation(2, 2);
                 sol.bot = new Node(NodeType.End);

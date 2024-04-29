@@ -20,7 +20,7 @@ public class Puzzle {
     private int side;
 
     private Node start;
-    private List<Node> end;
+    private Node end;
 
     // row : in which row
     // col : in which column
@@ -44,7 +44,7 @@ public class Puzzle {
             side = canvasSide/height;
         }
         start = root;
-        end = new ArrayList<>();
+        end = null;
         initializePuzzle(width, height);
     }
 
@@ -109,7 +109,7 @@ public class Puzzle {
             start.setType(NodeType.Path);
             start = node;
         } else if (newType == NodeType.End) {
-            end.add(node);
+            end = node;
         }
     }
 
@@ -122,7 +122,7 @@ public class Puzzle {
      * @return true if the puzzle is valid; false otherwise
      */
     public boolean isValid() {
-        return (start != null) && (end.size() > 0);
+        return (start != null) && (end != null);
     }
 
     /**
@@ -152,7 +152,7 @@ public class Puzzle {
         return height;
     }
 
-    public List<Node> getEnd() {
+    public Node getEnd() {
         return end;
     }
 

@@ -7,6 +7,8 @@ import java.awt.*;
 public class Node {
 
     double heuristic;
+    double f;
+    double h;
     public NodeType type;
 
     public Node left;
@@ -15,8 +17,8 @@ public class Node {
     public Node bot;
 
     // this is 0-index
-    int row;
-    int col;
+    public int row;
+    public int col;
 
     private static final Color backgroundColor = new Color(255,235,175);
 
